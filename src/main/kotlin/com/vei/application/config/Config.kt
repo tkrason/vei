@@ -9,7 +9,6 @@ fun createConfigModule(environment: String) = module { single { loadConfig(envir
 data class Config(
     val port: Int,
     val apiKey: String,
-    val catFactConfig: CatFactConfig,
     val mongoConfig: MongoConfig,
 )
 

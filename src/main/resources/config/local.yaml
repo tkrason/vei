@@ -3,6 +3,3 @@ apiKey: apiKey
 
 mongoConfig:
   connectionString: "mongodb://mongo:mongo@localhost"
-
-catFactConfig:
-  baseUrl: "https://catfact.ninja"
