@@ -11,10 +11,10 @@ plugins {
     id("com.google.devtools.ksp") version "1.8.21-1.0.11"
 }
 
-group = "com.example"
+group = "com.vei"
 version = "0.0.1"
 application {
-    mainClass.set("com.example.ApplicationKt")
+    mainClass.set("com.vei.ApplicationKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
