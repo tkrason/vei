@@ -14,4 +14,8 @@ class ProjectRepository(mongo: Mongo) : MongoCrudRepository<Project>(mongo, "vei
     suspend fun getAllProjectsForClient(objectId: ObjectId) = withCollection {
         find(Filters.eq(Project::belongsToClient.name, objectId))
     }
+
+    suspend fun deleteAllClientProjects(clientId: ObjectId) = deleteWhere {
+        Filters.eq(Project::belongsToClient.name, clientId)
+    }
 }

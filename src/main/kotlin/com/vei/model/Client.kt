@@ -15,6 +15,16 @@ data class Client(
     val contact: ClientContact,
 ) : Model
 
+data class ClientOption(
+    @BsonId val id: ObjectId,
+    val name: String,
+)
+
+data class ClientDeleteResponse(
+    val deletedClients: Long,
+    val deletedProjects: Long,
+)
+
 enum class ClientCategory {
     FINTECH,
     MEDTECH,
