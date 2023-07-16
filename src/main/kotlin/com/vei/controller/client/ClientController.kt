@@ -73,7 +73,7 @@ class ClientController(
             .toList()
             .map { it.toDto() }
 
-        call.respond(projects)
+        call.respond(ListWrapperDto(data = projects))
     }
 
     private fun Route.getAllClientsOptions() = get("/${getNameOfModelForRestPath()}/options") {

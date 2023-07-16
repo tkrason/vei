@@ -1,6 +1,7 @@
 package com.vei.application
 
 import com.vei.application.config.Config
+import com.vei.application.plugins.configureCORS
 import com.vei.application.plugins.configureHTTP
 import com.vei.application.plugins.configureMonitoring
 import com.vei.application.plugins.configureSecurity
@@ -29,5 +30,6 @@ private fun Application.configure(config: Config) {
     configureHTTP()
     configureMonitoring()
     configureSerialization()
+    configureCORS()
     registerSwagger()
 }
