@@ -62,7 +62,7 @@ class ClientController(
     override fun ClientDto.requestToModel(): Client = toModel()
 
     private fun Route.getAllProjectsForClient() = get("/${getNameOfModelForRestPath()}/{id}/projects", {
-        request { pathParameter<String>("id") { this.description = "MongoDB ObjectId of Project" } }
+        request { pathParameter<String>("id") { this.description = "MongoDB ObjectId of Client" } }
         response {
             HttpStatusCode.OK to { body<ListWrapperDto<ProjectDto>>() }
         }
