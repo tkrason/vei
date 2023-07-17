@@ -25,7 +25,7 @@ import org.koin.core.annotation.Singleton
 
 @Singleton(binds = [Controller::class])
 class ProjectController(
-    private val projectService: ProjectService,
+    projectService: ProjectService,
     private val fillableSlotService: FillableSlotService,
 ) : RestController<Project, ProjectDto, ProjectDto>(
     basePath = "api/v1",
@@ -47,6 +47,7 @@ class ProjectController(
     override fun listResponseDtoTypeInfo(): TypeInfo = listRequestTypeInfo()
 
     private fun Route.getAllSlotsOnProject() = get("/${getNameOfModelForRestPath()}/{id}/fillable-slot", {
+        tags = openApiTags
         request { pathParameter<String>("id") { this.description = "MongoDB ObjectId of Project" } }
         response {
             HttpStatusCode.OK to { body<ListWrapperDto<FillableSlotDto>>() }

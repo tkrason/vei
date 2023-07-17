@@ -56,7 +56,10 @@ abstract class RestController<MODEL : Model, REQUEST_DTO : Any, RESPONSE_DTO : A
     abstract fun responseDtoTypeInfo(): TypeInfo
     abstract fun listResponseDtoTypeInfo(): TypeInfo
 
+    val openApiTags = listOf(this.getNameOfModelForRestPath())
+
     fun Route.countAll() = get("/${getNameOfModelForRestPath()}/count", {
+        tags = openApiTags
         response { HttpStatusCode.OK to { body<CountResponseDto>() } }
     }) {
         val count = service.countAll()
@@ -64,6 +67,7 @@ abstract class RestController<MODEL : Model, REQUEST_DTO : Any, RESPONSE_DTO : A
     }
 
     fun Route.findAll() = get("/${getNameOfModelForRestPath()}/all", {
+        tags = openApiTags
         response { HttpStatusCode.OK to { body(listResponseDtoTypeInfo().type) } }
     }) {
         val allModels = service.findAll().toList()
@@ -72,6 +76,7 @@ abstract class RestController<MODEL : Model, REQUEST_DTO : Any, RESPONSE_DTO : A
     }
 
     fun Route.findFirstByIdOrNull() = get("/${getNameOfModelForRestPath()}/{id}", {
+        tags = openApiTags
         request { pathParameter<String>("id") { this.description = "MongoDB ObjectId" } }
         response {
             HttpStatusCode.NotFound to { }
@@ -87,6 +92,7 @@ abstract class RestController<MODEL : Model, REQUEST_DTO : Any, RESPONSE_DTO : A
     }
 
     fun Route.saveOne() = post("/${getNameOfModelForRestPath()}", {
+        tags = openApiTags
         request { body(requestDtoTypeInfo().type) }
         response { HttpStatusCode.Created to {} }
     }) {
@@ -99,6 +105,7 @@ abstract class RestController<MODEL : Model, REQUEST_DTO : Any, RESPONSE_DTO : A
     }
 
     fun Route.saveMany() = post("/many-${getNameOfModelForRestPath()}", {
+        tags = openApiTags
         request { body(listRequestTypeInfo().type) }
         response { HttpStatusCode.Created to {} }
     }) {
@@ -109,6 +116,7 @@ abstract class RestController<MODEL : Model, REQUEST_DTO : Any, RESPONSE_DTO : A
     }
 
     fun Route.updateOne() = put("/${getNameOfModelForRestPath()}", {
+        tags = openApiTags
         request { body(requestDtoTypeInfo().type) }
         response { HttpStatusCode.Accepted to {} }
     }) {
@@ -118,6 +126,7 @@ abstract class RestController<MODEL : Model, REQUEST_DTO : Any, RESPONSE_DTO : A
     }
 
     fun Route.deleteOneById() = delete("/${getNameOfModelForRestPath()}", {
+        tags = openApiTags
         request { queryParameter<String>("id") }
         response { HttpStatusCode.OK to { body<CountResponseDto>() } }
     }) {

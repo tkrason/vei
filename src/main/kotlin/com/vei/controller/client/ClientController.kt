@@ -3,6 +3,7 @@ package com.vei.controller.client
 import com.vei.controller.Controller
 import com.vei.controller.RestController
 import com.vei.controller.client.dto.ClientDto
+import com.vei.controller.client.dto.ClientOptionDto
 import com.vei.controller.client.dto.toDto
 import com.vei.controller.client.dto.toModel
 import com.vei.controller.common.dto.CountResponseDto
@@ -19,7 +20,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.get
 import io.ktor.server.util.getOrFail
 import io.ktor.util.reflect.TypeInfo
 import io.ktor.util.reflect.typeInfo
@@ -62,6 +62,7 @@ class ClientController(
     override fun ClientDto.requestToModel(): Client = toModel()
 
     private fun Route.getAllProjectsForClient() = get("/${getNameOfModelForRestPath()}/{id}/projects", {
+        tags = openApiTags
         request { pathParameter<String>("id") { this.description = "MongoDB ObjectId of Client" } }
         response {
             HttpStatusCode.OK to { body<ListWrapperDto<ProjectDto>>() }
@@ -76,11 +77,15 @@ class ClientController(
         call.respond(ListWrapperDto(data = projects))
     }
 
-    private fun Route.getAllClientsOptions() = get("/${getNameOfModelForRestPath()}/options") {
+    private fun Route.getAllClientsOptions() = get("/${getNameOfModelForRestPath()}/options", {
+        tags = openApiTags
+        response { HttpStatusCode.OK to { body<ListWrapperDto<ClientOptionDto>>() } }
+    }) {
         call.respond(clientService.getAllClientsOptions().toList().map { it.toDto() })
     }
 
     fun Route.deleteClient() = delete("/${getNameOfModelForRestPath()}", {
+        tags = openApiTags
         request { queryParameter<String>("id") }
         response { HttpStatusCode.OK to { body<CountResponseDto>() } }
     }) {
