@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PersonDto(
-    val id: String?,
+    val id: String? = null,
     val name: String,
     val surname: String,
     val skills: List<SkillDto>,

@@ -1,6 +1,7 @@
 package com.vei.repository
 
 import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Updates
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import com.vei.application.Mongo
 import com.vei.model.FillableSlot
@@ -15,5 +16,19 @@ class FillableSlotRepository(
 
     suspend fun getAllSlotsOnProject(projectId: ObjectId) = withCollection {
         find(Filters.eq(FillableSlot::belongsToProject.name, projectId))
+    }
+
+    suspend fun addPersonInTheSlot(slotId: ObjectId, personId: ObjectId) = withCollection {
+        updateOne(
+            Filters.eq(Mongo.MONGO_ID_FIELD, slotId),
+            Updates.addToSet(FillableSlot::poolOfPossibleFillables.name, personId),
+        )
+    }
+
+    suspend fun deletePersonFromSlot(slotId: ObjectId, personId: ObjectId) = withCollection {
+        updateOne(
+            Filters.eq(Mongo.MONGO_ID_FIELD, slotId),
+            Updates.pull(FillableSlot::poolOfPossibleFillables.name, personId),
+        )
     }
 }

@@ -18,7 +18,7 @@ data class Skill(
 )
 
 enum class SkillSeniority {
-    JUNION,
+    JUNIOR,
     MID,
     SENIOR,
     LEAD,
