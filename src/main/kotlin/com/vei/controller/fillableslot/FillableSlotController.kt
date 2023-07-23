@@ -4,9 +4,9 @@ import com.vei.controller.Controller
 import com.vei.controller.RestController
 import com.vei.controller.common.dto.ListWrapperDto
 import com.vei.controller.fillableslot.dto.FillableSlotDto
+import com.vei.controller.fillableslot.dto.SlotOptionDto
 import com.vei.controller.fillableslot.dto.toDto
 import com.vei.controller.fillableslot.dto.toModel
-import com.vei.controller.person.dto.AddPersonIntoSlotDto
 import com.vei.controller.person.dto.PersonDto
 import com.vei.controller.person.dto.toDto
 import com.vei.model.FillableSlot
@@ -69,16 +69,19 @@ class FillableSlotController(
 
     private fun Route.addPersonIntoSlot() = post("${getNameOfModelForRestPath()}/{id}/people", {
         tags = openApiTags
-        request { body<AddPersonIntoSlotDto>() }
+        request {
+            pathParameter<String>("id") { this.description = "MongoDB ObjectId of Fillable slot" }
+            body<SlotOptionDto>()
+        }
         response {
             HttpStatusCode.NotFound to { }
             HttpStatusCode.OK to { }
         }
     }) {
         val slotId = call.parameters.getOrFail("id")
-        val body = call.receive<AddPersonIntoSlotDto>()
+        val body = call.receive<SlotOptionDto>()
 
-        fillableSlotService.addPersonInTheSlot(slotId.toValidObjectIdOrThrow(), body.personId.toValidObjectIdOrThrow())
+        fillableSlotService.addPersonInTheSlot(slotId.toValidObjectIdOrThrow(), body.toModel())
         call.respond(HttpStatusCode.OK)
     }
 

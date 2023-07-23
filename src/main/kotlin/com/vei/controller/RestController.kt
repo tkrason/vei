@@ -125,9 +125,9 @@ abstract class RestController<MODEL : Model, REQUEST_DTO : Any, RESPONSE_DTO : A
         call.respond(HttpStatusCode.Accepted)
     }
 
-    fun Route.deleteOneById() = delete("/${getNameOfModelForRestPath()}", {
+    fun Route.deleteOneById() = delete("/${getNameOfModelForRestPath()}/{id}", {
         tags = openApiTags
-        request { queryParameter<String>("id") }
+        request { pathParameter<String>("id") { this.description = "MongoDB ObjectId of ${getNameOfModelForRestPath()} to delete" } }
         response { HttpStatusCode.OK to { body<CountResponseDto>() } }
     }) {
         val id = call.parameters.getOrFail("id")

@@ -13,5 +13,16 @@ data class FillableSlot(
     val requiredNumberOfFillables: Int,
 
     val belongsToProject: ObjectId,
-    val poolOfPossibleFillables: List<ObjectId>,
+    val poolOfPossibleFillables: List<SlotOption>,
 ) : Model
+
+data class SlotOption(
+    val personId: ObjectId,
+    val state: SlotOptionState,
+    val fte: Int,
+)
+
+enum class SlotOptionState {
+    PREBOOKED,
+    HARDBOOKED,
+}

@@ -84,9 +84,9 @@ class ClientController(
         call.respond(clientService.getAllClientsOptions().toList().map { it.toDto() })
     }
 
-    fun Route.deleteClient() = delete("/${getNameOfModelForRestPath()}", {
+    fun Route.deleteClient() = delete("/${getNameOfModelForRestPath()}/{id}", {
         tags = openApiTags
-        request { queryParameter<String>("id") }
+        request { pathParameter<String>("id") { this.description = "MongoDB ObjectId of Client to delete" } }
         response { HttpStatusCode.OK to { body<CountResponseDto>() } }
     }) {
         val id = call.parameters.getOrFail("id")
