@@ -6,6 +6,7 @@ import com.vei.repository.FillableSlotRepository
 import kotlinx.coroutines.coroutineScope
 import org.bson.types.ObjectId
 import org.koin.core.annotation.Singleton
+import java.time.LocalDate
 
 @Singleton
 class FillableSlotService(
@@ -29,4 +30,7 @@ class FillableSlotService(
 
     suspend fun deletePersonFromSlot(slotId: ObjectId, personId: ObjectId) =
         fillableSlotRepository.deletePersonFromSlot(slotId, personId)
+
+    suspend fun findAllInRange(from: LocalDate, to: LocalDate) =
+        fillableSlotRepository.findManySlotsInDateRange(from, to)
 }

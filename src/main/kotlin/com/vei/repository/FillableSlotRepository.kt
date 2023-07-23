@@ -8,6 +8,7 @@ import com.vei.model.FillableSlot
 import com.vei.model.SlotOption
 import org.bson.types.ObjectId
 import org.koin.core.annotation.Singleton
+import java.time.LocalDate
 
 @Singleton
 class FillableSlotRepository(
@@ -41,6 +42,14 @@ class FillableSlotRepository(
                 FillableSlot::poolOfPossibleFillables.name,
                 Filters.eq(SlotOption::personId.name, personId),
             ),
+        )
+    }
+
+    suspend fun findManySlotsInDateRange(from: LocalDate, to: LocalDate) = findManyAsFlow {
+        // Return all slots, but those that either
+        Filters.nor(
+            Filters.lt(FillableSlot::endDate.name, from), // ended before the start of range
+            Filters.gt(FillableSlot::startDate.name, to), // or will start only after end of range
         )
     }
 }
