@@ -5,7 +5,6 @@ import com.mongodb.kotlin.client.coroutine.MongoCollection
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import com.vei.application.Mongo
 import com.vei.model.Model
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
 import org.bson.BsonValue
@@ -26,8 +25,7 @@ abstract class MongoCrudRepository<MODEL : Model>(
     }
 
     suspend fun count(filter: (() -> Bson)? = null) = withCollection {
-        val elements = if (filter == null) find() else find(filter())
-        elements.count()
+        if (filter == null) countDocuments() else countDocuments(filter = filter())
     }
 
     suspend fun insertMany(models: List<MODEL>) = withCollection {
