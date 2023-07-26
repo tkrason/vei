@@ -25,6 +25,7 @@ class StatisticsController(
     override fun Route.routesForRegistrationOnBasePath() {
         getPeopleOnSlotsStatsInRange()
         getPeopleStatusOnPointInTime()
+        getDashboardStatistics()
     }
 
     val openApiTags = listOf("stats")
@@ -55,5 +56,11 @@ class StatisticsController(
 
         val peopleStatesOnDate = statisticsService.getPeopleStatusOnPointInTime(LocalDate.parse(date))
         call.respond(peopleStatesOnDate.map { it.toDto() })
+    }
+
+    private fun Route.getDashboardStatistics() = get("/dashboard", {
+        tags = openApiTags
+    }) {
+        call.respond(statisticsService.getDashboardStatistics().toDto())
     }
 }
